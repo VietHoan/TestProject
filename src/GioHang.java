@@ -26,7 +26,7 @@ public class GioHang {
         System.out.println("\nThoi gian tao: " + thoiGian + "\n");
         System.out.println("San pham trong gio hang:");
         for (SanPham sp: gioHang) {
-            sp.toString();
+            System.out.println(sp.toString());
         }
     }
 

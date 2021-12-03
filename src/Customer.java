@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Customer {
@@ -6,18 +7,15 @@ public class Customer {
     String name;
     String dob;
     int phone;
-    GioHang cart;
+    private ArrayList<GioHang> gioHangArrayList;
 
-
-    Customer() {
-        cart = new GioHang();
-    }
 
     public Customer(int id, String name, String dob, int phone) {
         this.id = id;
         this.name = name;
         this.dob = dob;
         this.phone = phone;
+        this.gioHangArrayList = new ArrayList<>();
     }
 
     public int getId() {
@@ -56,6 +54,18 @@ public class Customer {
         System.out.println(getId() + "\t" + getName() + "\t" + getDob() + "\t" + getPhone() + "\t" );
     }
 
+    public void addGioHangToKH(GioHang gioHang){
+        this.gioHangArrayList.add(gioHang);
+    }
+
+    public ArrayList<GioHang> getGioHangArrayList() {
+        return gioHangArrayList;
+    }
+
+    public void setGioHangArrayList(ArrayList<GioHang> gioHangArrayList) {
+        this.gioHangArrayList = gioHangArrayList;
+    }
+
     public void input() {
         System.out.print("Nhap id: ");
         int idInput = sc.nextInt();
@@ -73,4 +83,5 @@ public class Customer {
         int phoneInput = sc.nextInt();
         setPhone(phoneInput);
     }
+
 }
