@@ -3,41 +3,48 @@ import java.util.Scanner;
 
 public class Main {
     static Scanner sc = new Scanner(System.in);
+    static GioHang gh = new GioHang();
+    static int customerID;
 
     public static ArrayList<SanPham> pL = new ArrayList<SanPham>();
     public static ArrayList<Customer> cL = new ArrayList<Customer>();
 
-
     public static void main(String[] args) {
         cL.add(new Customer(123,"Hoan","4/1",123));
-        cL.add(new Customer(124,"Hoan","4/1",123));
-        cL.add(new Customer(125,"Hoan","4/1",123));
+        cL.add(new Customer(124,"Binh","5/1",124));
+        cL.add(new Customer(125,"Kien","6/1",125));
 
-        GioHang gioHang = new GioHang();
         SanPham ao = new Ao("123","123","123","123","123",123,123,123);
         SanPham ao1 = new Ao("124","123","123","123","123",123,123,123);
         SanPham ao2 = new Ao("125","123","123","123","123",123,123,123);
         SanPham ao3 = new Ao("126","123","123","123","123",123,123,123);
         SanPham ao4 = new Ao("127","123","123","123","123",123,123,123);
 
-        gioHang.themVaoGioHang(ao);
-        gioHang.themVaoGioHang(ao1);
-        gioHang.themVaoGioHang(ao2);
-        gioHang.themVaoGioHang(ao3);
-        gioHang.themVaoGioHang(ao4);
+        pL.add(ao);
+        pL.add(ao1);
+        pL.add(ao2);
+        pL.add(ao3);
+        pL.add(ao4);
+
+        GioHang gioHang = new GioHang();
 
         cL.get(0).addGioHangToKH(gioHang);
 
         int choose;
         do {
             mainMenu();
-            choose = Integer.parseInt(sc.nextLine());
+            choose = sc.nextInt();
             switch (choose){
                 case 1:
                     adminMenu();
                     break;
                 case 2:
-                    customerMenu();
+                    checkID();
+                    for(Customer cs: cL) {
+                        if(customerID == cs.getId()) {
+                            customerMenu();
+                        }
+                    }
                     break;
                 case 3:
                     break;
@@ -157,11 +164,9 @@ public class Main {
         System.out.println("Mã sản phẩm không tồn tại!");
     }
     static void TTCustomer(){
-        for(Customer cus1 : cL){
-                cus1.display();
-                break;
+        for(Customer cs : cL){
+            cs.display();
         }
-        System.out.println("Nhap lai!");
     }
     static void TTGioHang(){
         System.out.println("Nhap ID khach hang");
@@ -174,24 +179,34 @@ public class Main {
             }
         }
     }
+
+    static void checkID() {
+        System.out.print("Nhap ID khach hang: ");
+        customerID = sc.nextInt();
+    }
+
     static void customerMenu(){
-        System.out.println("\n1. Xem tất cả sản phẩm");
-        System.out.println("2. Nhập sản phẩm bạn muốn thêm vào giỏ hàng");
-        System.out.println("3. Nhập sản phẩm bạn muốn xóa khỏi giỏ hàng");
-        System.out.println("4. Xem giỏ hàng của bạn và xem hóa đơn");
-        System.out.println("5. Thanh toán");
-        System.out.println("6. Kết thúc");
         int customerChoose;
         do {
-            customerChoose = Integer.parseInt(sc.nextLine());
+            System.out.println("\n1. Xem tất cả sản phẩm");
+            System.out.println("2. Nhập sản phẩm bạn muốn thêm vào giỏ hàng");
+            System.out.println("3. Nhập sản phẩm bạn muốn xóa khỏi giỏ hàng");
+            System.out.println("4. Xem giỏ hàng của bạn và xem hóa đơn");
+            System.out.println("5. Thanh toán");
+            System.out.println("6. Kết thúc");
+            customerChoose = sc.nextInt();
             switch (customerChoose){
                 case 1:
+                    showProduct();
                     break;
                 case 2:
+                    addToCart();
                     break;
                 case 3:
+                    removeFromCart();
                     break;
                 case 4:
+                    showCart();
                     break;
                 case 5:
                     break;
@@ -202,5 +217,63 @@ public class Main {
                     break;
             }
         }while (customerChoose!=6);
+    }
+
+    static void showProduct() {
+        if (pL.isEmpty()) {
+            System.out.println("Danh sách trống.");
+        } else {
+            for (SanPham sp: pL) {
+                System.out.println(sp.toString());
+            }
+        }
+    }
+
+    static void addToCart() {
+        System.out.print("Nhap ma san pham: ");
+        String addToCart = sc.next();
+
+        for(SanPham sp: pL) {
+            if(addToCart.equals(sp.getMaSP())) {
+                gh.themVaoGioHang(sp);
+            }
+        }
+
+        for(Customer cs: cL) {
+            for(int i = 0; i < cL.size(); i++) {
+                if(customerID == cs.getId()) {
+                    cL.get(i).addGioHangToKH(gh);
+                }
+            }
+        }
+    }
+
+    static void removeFromCart() {
+        System.out.print("Nhap ma san pham: ");
+        String removeFromCart = sc.next();
+
+        for(SanPham sp: pL) {
+            if(removeFromCart.equals(sp.getMaSP())) {
+                gh.xoaKhoiGioHang(sp);
+            }
+        }
+
+        for(Customer cs: cL) {
+            for(int i = 0; i < cL.size(); i++) {
+                if(customerID == cs.getId()) {
+                    cL.get(i).addGioHangToKH(gh);
+                }
+            }
+        }
+    }
+
+    static void showCart() {
+        for(Customer cs: cL) {
+            if (customerID == cs.getId()) {
+                for (int i = 0; i < cs.getGioHangArrayList().size(); i++) {
+                    cs.getGioHangArrayList().get(i).display();
+                }
+            }
+        }
     }
 }
