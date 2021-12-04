@@ -281,6 +281,5 @@ public class Main {
     }
 
     static void payment() {
-
     }
 }
