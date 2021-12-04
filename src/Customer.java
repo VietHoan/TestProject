@@ -58,6 +58,10 @@ public class Customer {
         this.gioHangArrayList.add(gioHang);
     }
 
+    public void removeGioHangToKH(GioHang gioHang){
+        this.gioHangArrayList.remove(gioHang);
+    }
+
     public ArrayList<GioHang> getGioHangArrayList() {
         return gioHangArrayList;
     }
