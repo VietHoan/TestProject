@@ -7,6 +7,7 @@ public class GioHang {
     private Date date;
     private PaymentStatus paymentStatus;
     private int PaymentQuantity;
+    private int remainingProduct;
 
     public int getPaymentQuantity() {
         return PaymentQuantity;
@@ -77,5 +78,22 @@ public class GioHang {
             paymentAmount += sp.getSoLuong() * sp.getGia();
         }
         return paymentAmount;
+    }
+
+    public int getRemaining(SanPham s) {
+        for(SanPham sp: gioHang) {
+            if(s.getMaSP().equals(sp.getMaSP())) {
+                s.setSoLuong(s.getSoLuong() - s.getRemainingProduct());
+            }
+        }
+        return s.getSoLuong();
+    }
+
+    public void getQuantity(SanPham s, int a) {
+        for(SanPham sp: gioHang) {
+            if(s.getMaSP().equals(sp.getMaSP())) {
+                s.setRemainingProduct(a);
+            }
+        }
     }
 }

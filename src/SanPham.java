@@ -3,6 +3,15 @@ import java.util.Scanner;
 public class SanPham {
     String MaSP, LoaiSP,TenSP, MoTa,Size;
     int Gia,SoLuong;
+    int remainingProduct;
+
+    public int getRemainingProduct() {
+        return remainingProduct;
+    }
+
+    public void setRemainingProduct(int remainingProduct) {
+        this.remainingProduct = remainingProduct;
+    }
 
     public SanPham() {
 
