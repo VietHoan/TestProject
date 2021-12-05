@@ -257,11 +257,13 @@ public class Main {
                         SanPham productCart = new Quan(sp.getMaSP(), sp.getLoaiSP(), sp.getTenSP(), sp.getMoTa(),
                                 sp.getSize(), sp.getGia(), productQuantity, sp.getDaiQuan());
                         cartTmp.themVaoGioHang(productCart);
+                        cartTmp.getQuantity(sp, productQuantity);
                     }
                     if(sp.getLoaiSP().equals("Ao")) {
                         SanPham productCart = new Quan(sp.getMaSP(), sp.getLoaiSP(), sp.getTenSP(), sp.getMoTa(), sp.getSize(),
                                 sp.getGia(), productQuantity, sp.getDaiAo());
                         cartTmp.themVaoGioHang(productCart);
+                        cartTmp.getQuantity(sp, productQuantity);
                     }
                 }else if(productQuantity == 0){
                     System.out.print("San pham da het hang!");
@@ -314,7 +316,6 @@ public class Main {
                 paymentAmount = cart.PaymentAmount();
             }
         }
-
         System.out.println("Tong hoa don: " + paymentAmount);
         System.out.println("1. Dong y");
         System.out.println("2. Quay lai");
@@ -326,8 +327,12 @@ public class Main {
                         if(cart.getPaymentStatus().equals(PaymentStatus.PENDING)) {
                             cart.setPaymentStatus(PaymentStatus.PAID);
                             System.out.print("Cam on quy khach!");
+                            for(SanPham sp: productList) {
+                                sp.setSoLuong(cart.getRemaining(sp));
+                            }
                         }
                     }
+
                 }else {
                     System.out.print("Gio hang trong!");
                 }
