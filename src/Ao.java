@@ -8,7 +8,7 @@ public class Ao extends SanPham {
     }
 
     public Ao(String MaSP, String LoaiSP, String TenSP, String MoTa, String Size, int Gia, int SoLuong, int DaiAo) {
-        super (MaSP, TenSP, MoTa, LoaiSP, Size, Gia, SoLuong);
+        super (MaSP, LoaiSP, TenSP, MoTa, Size, Gia, SoLuong);
         this.DaiAo = DaiAo;
     }
 
@@ -25,12 +25,16 @@ public class Ao extends SanPham {
         return super.toString() +", Dai Ao = " + DaiAo;
     }
 
-    @Override
     public void input() {
         super.input();
 
         Scanner scan = new Scanner(System.in);
         System.out.println("Nhap do dai Ao: ");
         DaiAo = scan.nextInt();
+    }
+
+    public void display() {
+        super.display();
+        System.out.print(getDaiAo() + "\n");
     }
 }

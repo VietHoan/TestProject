@@ -6,6 +6,15 @@ public class GioHang {
     private String thoiGian;
     private Date date;
     private PaymentStatus paymentStatus;
+    private int PaymentQuantity;
+
+    public int getPaymentQuantity() {
+        return PaymentQuantity;
+    }
+
+    public void setPaymentQuantity(int paymentQuantity) {
+        PaymentQuantity = paymentQuantity;
+    }
 
     public GioHang() {
         gioHang = new ArrayList<>();
@@ -60,5 +69,13 @@ public class GioHang {
 
     public void setPaymentStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
+    }
+
+    public int PaymentAmount() {
+        int paymentAmount = 0;
+        for (SanPham sp: gioHang) {
+            paymentAmount += sp.getSoLuong() * sp.getGia();
+        }
+        return paymentAmount;
     }
 }

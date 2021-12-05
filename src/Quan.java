@@ -8,7 +8,7 @@ public class Quan extends SanPham {
     }
 
     public Quan(String MaSP, String LoaiSP, String TenSP, String MoTa, String Size, int Gia, int SoLuong,int DaiQuan) {
-        super (MaSP, TenSP, MoTa, LoaiSP, Size, Gia, SoLuong);
+        super (MaSP, LoaiSP, TenSP, MoTa, Size, Gia, SoLuong);
         this.DaiQuan = DaiQuan;
     }
 
@@ -25,12 +25,17 @@ public class Quan extends SanPham {
         return super.toString() +", Dai quan = " + DaiQuan;
     }
 
-    @Override
     public void input() {
         super.input();
 
         Scanner scan = new Scanner(System.in);
         System.out.println("Nhap do dai quan: ");
         DaiQuan = scan.nextInt();
+    }
+
+
+    public void display() {
+        super.display();
+        System.out.print("\t" + getDaiQuan() + "\n");
     }
 }

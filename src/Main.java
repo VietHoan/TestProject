@@ -15,17 +15,17 @@ public class Main {
         customerList.add(new Customer(124,"Binh","5/1",124));
         customerList.add(new Customer(125,"Kien","6/1",125));
 
-        SanPham ao = new Ao("123","123","123","123","123",123,123,123);
-        SanPham ao1 = new Ao("124","123","123","123","123",123,123,123);
-        SanPham ao2 = new Ao("125","123","123","123","123",123,123,123);
-        SanPham ao3 = new Ao("126","123","123","123","123",123,123,123);
-        SanPham ao4 = new Ao("127","123","123","123","123",123,123,123);
+        SanPham ao = new Ao("123","Ao","Ao da bo","Tot","33",50000,12,77);
+        SanPham ao1 = new Ao("124","Ao","Ao da lon","Binh thuong","36",100000,0,55);
+        SanPham ao2 = new Ao("125","Ao","Ao ca sau","Te","30",123,20000,11);
+        SanPham quan = new Quan("126","Quan","Quan bo","Tot","40",50000,5,10);
+        SanPham quan1 = new Quan("127","Quan","Quan chi","Tot","43",50000,1,15);
 
         productList.add(ao);
         productList.add(ao1);
         productList.add(ao2);
-        productList.add(ao3);
-        productList.add(ao4);
+        productList.add(quan);
+        productList.add(quan1);
 
 
 
@@ -175,8 +175,15 @@ public class Main {
         int id = Integer.parseInt(sc.nextLine());
         for(Customer csm : customerList){
             if(id == csm.id){
-                for (int i = 0; i < csm.getGioHangArrayList().size(); i++) {
-                    csm.getGioHangArrayList().get(i).display();
+                List<GioHang> cartList = customer.getGioHangArrayList();
+                if(cartList.size() > 0) {
+                    for (GioHang cart: cartList) {
+                        if(cart.getPaymentStatus().equals(PaymentStatus.PAID)) {
+                            cart.display();
+                        }
+                    }
+                }else {
+                    System.out.print("Khong co gio hang nao nao");
                 }
             }
         }
@@ -230,6 +237,8 @@ public class Main {
     static void addToCart() {
         System.out.print("Nhap ma san pham: ");
         String productCode = sc.nextLine();
+        System.out.print("Nhap so luong: ");
+        int productQuantity = Integer.parseInt(sc.nextLine());
         List<GioHang> cartList = customer.getGioHangArrayList();
         GioHang cartTmp = new GioHang();
         boolean checkExist = false;
@@ -243,9 +252,26 @@ public class Main {
 
         for(SanPham sp: productList) {
             if(productCode.equals(sp.getMaSP())) {
-                cartTmp.themVaoGioHang(sp);
+                if(productQuantity < sp.getSoLuong()) {
+                    if(sp.getLoaiSP().equals("Quan")) {
+                        SanPham productCart = new Quan(sp.getMaSP(), sp.getLoaiSP(), sp.getTenSP(), sp.getMoTa(),
+                                sp.getSize(), sp.getGia(), productQuantity, sp.getDaiQuan());
+                        cartTmp.themVaoGioHang(productCart);
+                    }
+                    if(sp.getLoaiSP().equals("Ao")) {
+                        SanPham productCart = new Quan(sp.getMaSP(), sp.getLoaiSP(), sp.getTenSP(), sp.getMoTa(), sp.getSize(),
+                                sp.getGia(), productQuantity, sp.getDaiAo());
+                        cartTmp.themVaoGioHang(productCart);
+                    }
+                }else if(productQuantity == 0){
+                    System.out.print("San pham da het hang!");
+                }else {
+                    System.out.print("San pham khong du hang!");
+                }
             }
         }
+
+
         if(!checkExist) {
             customer.getGioHangArrayList().add(cartTmp);
         }
@@ -281,6 +307,35 @@ public class Main {
     }
 
     static void payment() {
+        int paymentAmount = 0;
+        List<GioHang> cartList = customer.getGioHangArrayList();
+        for (GioHang cart: cartList) {
+            if(cart.getPaymentStatus().equals(PaymentStatus.PENDING)) {
+                paymentAmount = cart.PaymentAmount();
+            }
+        }
 
+        System.out.println("Tong hoa don: " + paymentAmount);
+        System.out.println("1. Dong y");
+        System.out.println("2. Quay lai");
+        int paymentChoose = Integer.parseInt(sc.nextLine());
+        switch(paymentChoose) {
+            case 1:
+                if(cartList.size() > 0) {
+                    for (GioHang cart: cartList) {
+                        if(cart.getPaymentStatus().equals(PaymentStatus.PENDING)) {
+                            cart.setPaymentStatus(PaymentStatus.PAID);
+                            System.out.print("Cam on quy khach!");
+                        }
+                    }
+                }else {
+                    System.out.print("Gio hang trong!");
+                }
+                break;
+            case 2:
+                break;
+            default:
+                System.out.print("Chon lai");
+        }
     }
 }
