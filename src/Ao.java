@@ -22,7 +22,7 @@ public class Ao extends SanPham {
 
     @Override
     public String toString() {
-        return super.toString() +", Dai Ao = " + DaiAo;
+        return super.toString() +"\t\tDai Ao = " + DaiAo;
     }
 
     public void input() {

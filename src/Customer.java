@@ -18,6 +18,10 @@ public class Customer {
         this.gioHangArrayList = new ArrayList<>();
     }
 
+    public Customer(){
+        this.gioHangArrayList = new ArrayList<>();
+    }
+
     public int getId() {
         return id;
     }
@@ -51,7 +55,7 @@ public class Customer {
     }
 
     public void display() {
-        System.out.println(getId() + "\t" + getName() + "\t" + getDob() + "\t" + getPhone() + "\t" );
+        System.out.println(getId() + "\t\t\t" + getName() + "\t\t\t" + getDob() + "\t\t\t\t" + getPhone() + "\t" );
     }
 
     public void addGioHangToKH(GioHang gioHang){
@@ -72,7 +76,7 @@ public class Customer {
 
     public void input() {
         System.out.print("Nhap id: ");
-        int idInput = sc.nextInt();
+        int idInput = Integer.parseInt(sc.nextLine());
         setId(idInput);
 
         System.out.print("Nhap ten: ");
@@ -84,7 +88,7 @@ public class Customer {
         setDob(dobInput);
 
         System.out.print("Nhap dien thoai: ");
-        int phoneInput = sc.nextInt();
+        int phoneInput = Integer.parseInt(sc.nextLine());
         setPhone(phoneInput);
     }
 

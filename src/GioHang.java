@@ -33,10 +33,11 @@ public class GioHang {
     }
 
     public void display() {
-        System.out.println("\nThoi gian tao: " + thoiGian + "\n");
+        System.out.println("\nThoi gian tao: " + thoiGian);
+        System.out.println("Trạng thái: " + getPaymentStatus());
         System.out.println("San pham trong gio hang:");
         for (SanPham sp: gioHang) {
-            sp.display();
+            System.out.println(sp.toString());
         }
     }
 

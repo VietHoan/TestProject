@@ -84,7 +84,9 @@ public class SanPham {
     }
 
     public String toString() {
-        return "Ma san pham: " + MaSP + ", Loai san pham: " + LoaiSP + ", Ten san pham: " + TenSP + ", Mo ta: " + MoTa + ", Size: " + Size +", Gia: " + Gia + ", So luong: " + SoLuong;
+        return "Ma san pham: " + MaSP + "\t\tLoai san pham: " + LoaiSP + "\t\tTen san pham: " +
+                TenSP + "\t\tMo ta: " + MoTa + "\t\t\tSize: " +
+                Size +"\t\tGia: " + Gia + "\t\tSo luong: " + SoLuong;
     }
 
     public void input() {

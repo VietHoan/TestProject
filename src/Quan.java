@@ -22,7 +22,7 @@ public class Quan extends SanPham {
 
     @Override
     public String toString() {
-        return super.toString() +", Dai quan = " + DaiQuan;
+        return super.toString() +"\t\t\tDai quan = " + DaiQuan;
     }
 
     public void input() {
