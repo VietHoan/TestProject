@@ -7,8 +7,8 @@ public class Main {
     static int customerID;
     static Customer customer; // khách hàng mẫu
 
-    public static ArrayList<SanPham> productList = new ArrayList<SanPham>();
-    public static ArrayList<Customer> customerList = new ArrayList<Customer>();
+    public static List<SanPham> productList = new ArrayList<>();
+    public static List<Customer> customerList = new ArrayList<>();
 
     public static void main(String[] args) {
         // Customers mặc định
@@ -377,18 +377,24 @@ public class Main {
         System.out.print("Nhap ma san pham: ");
         String productCode = sc.nextLine();
         for (GioHang cart: cartList) {
-            if(cart.getPaymentStatus().equals(PaymentStatus.PENDING)) {
-                for(SanPham sp: productList) {
-                    if(productCode.equals(sp.getMaSP())) {
+            if (cart.getPaymentStatus().equals(PaymentStatus.PENDING)) {
+                List<SanPham> cartPending = cart.getGioHang();
+                for (SanPham sp: cartPending) {
+                     if (productCode.equals(sp.getMaSP())) {
                         cart.xoaKhoiGioHang(sp);
                         hasDelete = true;
+                        break;
                     }
                 }
             }
         }
 
-        if (!hasDelete) System.out.println("Xóa sản phẩm thất bại");
-        else System.out.println("Xóa sản phẩm thành công");
+
+        if (!hasDelete) {
+            System.out.println("Xóa sản phẩm thất bại");
+        } else {
+            System.out.println("Xóa sản phẩm thành công");
+        }
     }
 
     static void showCart(List<GioHang> cartList) {

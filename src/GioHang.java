@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class GioHang {
-    private ArrayList<SanPham> gioHang;
+    private List<SanPham> gioHang;
     private String thoiGian;
     private Date date;
     private PaymentStatus paymentStatus;
@@ -41,7 +42,7 @@ public class GioHang {
         }
     }
 
-    public ArrayList<SanPham> getGioHang() {
+    public List<SanPham> getGioHang() {
         return gioHang;
     }
 
