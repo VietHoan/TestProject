@@ -9,7 +9,6 @@ public class Customer {
     int phone;
     private ArrayList<GioHang> gioHangArrayList;
 
-
     public Customer(int id, String name, String dob, int phone) {
         this.id = id;
         this.name = name;
@@ -58,21 +57,21 @@ public class Customer {
         System.out.println(getId() + "\t\t\t" + getName() + "\t\t\t" + getDob() + "\t\t\t\t" + getPhone() + "\t" );
     }
 
-    public void addGioHangToKH(GioHang gioHang){
+/*    public void addGioHangToKH(GioHang gioHang){
         this.gioHangArrayList.add(gioHang);
     }
 
     public void removeGioHangToKH(GioHang gioHang){
         this.gioHangArrayList.remove(gioHang);
-    }
+    }*/
 
     public ArrayList<GioHang> getGioHangArrayList() {
         return gioHangArrayList;
     }
 
-    public void setGioHangArrayList(ArrayList<GioHang> gioHangArrayList) {
+/*    public void setGioHangArrayList(ArrayList<GioHang> gioHangArrayList) {
         this.gioHangArrayList = gioHangArrayList;
-    }
+    }*/
 
     public void input() {
         System.out.print("Nhap id: ");
@@ -91,5 +90,4 @@ public class Customer {
         int phoneInput = Integer.parseInt(sc.nextLine());
         setPhone(phoneInput);
     }
-
 }

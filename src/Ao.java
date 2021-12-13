@@ -27,7 +27,6 @@ public class Ao extends SanPham {
 
     public void input() {
         super.input();
-
         Scanner scan = new Scanner(System.in);
         System.out.println("Nhap do dai Ao: ");
         DaiAo = scan.nextInt();

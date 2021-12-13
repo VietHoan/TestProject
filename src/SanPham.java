@@ -92,9 +92,6 @@ public class SanPham {
     public void input() {
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("Nhap ma san pham: ");
-        MaSP = scan.nextLine();
-
         System.out.println("Nhap loai san pham: ");
         LoaiSP = scan.nextLine();
 
@@ -112,6 +109,12 @@ public class SanPham {
 
         System.out.println("Nhap so luong san pham: ");
         SoLuong = scan.nextInt();
+    }
+
+    public void inputMaSP(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Nhap ma san pham: ");
+        MaSP = sc.nextLine();
     }
 
     public void displayMenu() {

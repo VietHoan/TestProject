@@ -97,4 +97,31 @@ public class GioHang {
             }
         }
     }
+
+    public void addProduct(String productCode,int productQuantity){
+        for(SanPham sp: Main.productList) { // Duyệt từng sản phẩm trong cửa hàng
+            if(productCode.equals(sp.getMaSP())) {// nếu tìm được sản phẩm cần thêm
+                if(productQuantity <= sp.getSoLuong()) { // check số lượng sản phẩm cần thêm còn lại của cửa hàng
+                    if(sp.getLoaiSP().equals("Quan")) {
+                        SanPham productCart = new Quan(sp.getMaSP(), sp.getLoaiSP(), sp.getTenSP(), sp.getMoTa(),
+                                sp.getSize(), sp.getGia(), productQuantity, sp.getDaiQuan());
+                        themVaoGioHang(productCart);
+                        getQuantity(sp, productQuantity);
+                        System.out.println("Thêm sản phẩm thành công");
+                    }
+                    if(sp.getLoaiSP().equals("Ao")) {
+                        SanPham productCart = new Quan(sp.getMaSP(), sp.getLoaiSP(), sp.getTenSP(), sp.getMoTa(), sp.getSize(),
+                                sp.getGia(), productQuantity, sp.getDaiAo());
+                        themVaoGioHang(productCart);
+                        getQuantity(sp, productQuantity);
+                        System.out.println("Thêm sản phẩm thành công");
+                    }
+                }else if(productQuantity == 0){
+                    System.out.print("San pham da het hang!");
+                }else {
+                    System.out.print("San pham khong du hang!");
+                }
+            }
+        }
+    }
 }

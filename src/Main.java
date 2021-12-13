@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Main {
     static Scanner sc = new Scanner(System.in);
     static int customerID;
-    static Customer customer;
+    static Customer customer; // khách hàng mẫu
 
     public static ArrayList<SanPham> productList = new ArrayList<SanPham>();
     public static ArrayList<Customer> customerList = new ArrayList<Customer>();
@@ -40,7 +40,7 @@ public class Main {
                 case 2:
                     System.out.print("Nhap ID khach hang: ");
                     customerID = Integer.parseInt(sc.nextLine());
-                    if (!checkExistCustomer(customerID)){
+                    if (!checkExistCustomer(customerID)){ // check ID
                         System.out.println("Khách hàng chưa tồn tại, vui lòng đăng kí thông tin khách hàng qua Quản lý");
                         System.out.println("Xin chân thành cảm ơn!!!");
                     }
@@ -85,7 +85,7 @@ public class Main {
             System.out.println("\n1. Thêm thông tin khách hàng");
             System.out.println("2. Tìm kiếm khách hàng");
             System.out.println("3. Xem danh sách sản phẩm");
-            System.out.println("4. Thêm sản phẩm");
+            System.out.println("4. Thêm sản phẩm mới");
             System.out.println("5. Xóa sản phẩm");
             System.out.println("6. Xem toàn bộ khách hàng");
             System.out.println("7. Xem giỏ hàng của khách hàng");
@@ -124,6 +124,7 @@ public class Main {
             }
         }while (adminChoose!=8);
     }
+
     /// Phiên làm việc của Admin
     static void addNewCustomer(){
         boolean hasCustomer = false;
@@ -131,7 +132,7 @@ public class Main {
         newCustomer.input();
         for (int i = 0; i < customerList.size(); i++) {
             if (newCustomer.getId() == customerList.get(i).getId()) {
-                System.out.println("Khách hàng đã tồn tại, hãy nhập lại");
+                System.out.println("Mã khách hàng đã tồn tại, hãy nhập lại");
                 hasCustomer = true;
                 break;
             }
@@ -171,19 +172,31 @@ public class Main {
         switch (adminChoose) {
             case 1:
                 sp = new Quan();
-                sp.input();
+                sp.inputMaSP();
                 if(checkExistProduct(sp.getMaSP())){
-                    System.out.println("Sản phẩm đã tồn tại, hãy nhập lại mã sản phẩm cần thêm");
+                    System.out.println("Sản phẩm đa tồn tại,hãy lựa chọn");
+                    menuAddProduct(sp.getMaSP());
                     break;
                 }
-                else productList.add(sp);
-                System.out.println("Thêm sản phẩm thành công");
+                else {
+                    sp.input();
+                    productList.add(sp);
+                    System.out.println("Thêm sản phẩm thành công");
+                }
                 break;
             case 2:
                 sp = new Ao();
-                sp.input();
-                productList.add(sp);
-                System.out.println("Thêm sản phẩm thành công");
+                sp.inputMaSP();
+                if(checkExistProduct(sp.getMaSP())){
+                    System.out.println("Sản phẩm đã tồn tại, hãy lựa chọn: ");
+                    menuAddProduct(sp.getMaSP());
+                    break;
+                }
+                else {
+                    sp.input();
+                    productList.add(sp);
+                    System.out.println("Thêm sản phẩm thành công");
+                }
                 break;
             default:
                 System.out.println("Lựa chọn không tồn tại!");
@@ -196,6 +209,33 @@ public class Main {
             if (maSp.equals(productList.get(i).getMaSP())) return true;
         }
         return false;
+    }
+
+    static void menuAddProduct(String maSp){
+        System.out.println("1. Tăng số lượng sản phẩm ");
+        System.out.println("2. Thoát và nhập lại");
+        int choose;
+        do {
+            choose = Integer.parseInt(sc.nextLine());
+            switch (choose){
+                case 1:
+                    System.out.println("Nhập số lượng sản phẩm muốn tăng thêm");
+                    int soluong = Integer.parseInt(sc.nextLine());
+                    for (SanPham sanPham : productList){
+                        if (sanPham.getMaSP().equals(maSp)){
+                            sanPham.setSoLuong(sanPham.getSoLuong()+soluong);
+                            break;
+                        }
+                    }
+                    break;
+                case 2:
+                    break;
+                default:
+                    System.out.println("lựa chọn không tồn tại!!");
+                    break;
+            }
+            break;
+        }while (choose!=2);
     }
 
     static void removeProduct() {
@@ -242,6 +282,7 @@ public class Main {
     // Phiên làm việc của Customer
     static void customerMenu(){
         int customerChoose;
+        List<GioHang> cartList = customer.getGioHangArrayList();
         do {
             System.out.println("\n1. Xem tất cả sản phẩm");
             System.out.println("2. Nhập sản phẩm bạn muốn thêm vào giỏ hàng");
@@ -256,16 +297,16 @@ public class Main {
                     showProduct();
                     break;
                 case 2:
-                    addToCart();
+                    addToCart(cartList);
                     break;
                 case 3:
-                    removeFromCart();
+                    removeFromCart(cartList);
                     break;
                 case 4:
-                    showCart();
+                    showCart(cartList);
                     break;
                 case 5:
-                    payment();
+                    payment(cartList);
                     break;
                 case 6:
                     break;
@@ -286,12 +327,11 @@ public class Main {
         }
     }
 
-    static void addToCart() {
+    static void addToCart(List<GioHang> cartList) {
         System.out.print("Nhap ma san pham: ");
         String productCode = sc.nextLine();
         System.out.print("Nhap so luong: ");
         int productQuantity = Integer.parseInt(sc.nextLine());
-        List<GioHang> cartList = customer.getGioHangArrayList();
         GioHang cartTmp = new GioHang();
         boolean checkExist = false;
         for (GioHang cart: cartList) {
@@ -301,10 +341,9 @@ public class Main {
                 break;
             }
         }
-
-        for(SanPham sp: productList) {
-            if(productCode.equals(sp.getMaSP())) {
-                if(productQuantity <= sp.getSoLuong()) {
+/*        for(SanPham sp: productList) { // Duyệt từng sản phẩm trong cửa hàng
+            if(productCode.equals(sp.getMaSP())) {// nếu tìm được sản phẩm cần thêm
+                if(productQuantity <= sp.getSoLuong()) { // check số lượng sản phẩm cần thêm còn lại của cửa hàng
                     if(sp.getLoaiSP().equals("Quan")) {
                         SanPham productCart = new Quan(sp.getMaSP(), sp.getLoaiSP(), sp.getTenSP(), sp.getMoTa(),
                                 sp.getSize(), sp.getGia(), productQuantity, sp.getDaiQuan());
@@ -325,48 +364,48 @@ public class Main {
                     System.out.print("San pham khong du hang!");
                 }
             }
-        }
-
+        }*/
+        cartTmp.addProduct(productCode,productQuantity);
 
         if(!checkExist) {
             customer.getGioHangArrayList().add(cartTmp);
         }
     }
 
-    static void removeFromCart() {
+    static void removeFromCart(List<GioHang> cartList) {
+        boolean hasDelete = false;
         System.out.print("Nhap ma san pham: ");
         String productCode = sc.nextLine();
-
-        List<GioHang> cartList = customer.getGioHangArrayList();
         for (GioHang cart: cartList) {
             if(cart.getPaymentStatus().equals(PaymentStatus.PENDING)) {
                 for(SanPham sp: productList) {
                     if(productCode.equals(sp.getMaSP())) {
                         cart.xoaKhoiGioHang(sp);
-                        System.out.println("Xóa sản phẩm thành công");
+                        hasDelete = true;
                     }
                 }
             }
         }
+
+        if (!hasDelete) System.out.println("Xóa sản phẩm thất bại");
+        else System.out.println("Xóa sản phẩm thành công");
     }
 
-    static void showCart() {
-        List<GioHang> cartList = customer.getGioHangArrayList();
+    static void showCart(List<GioHang> cartList) {
         if(cartList.size() > 0) {
             for (GioHang cart: cartList) {
                 if(cart.getPaymentStatus().equals(PaymentStatus.PENDING)) {
                     cart.display();
                 }
             }
-            System.out.println("Tổng hóa đơn: " + getPaymentAmount());
+            System.out.println("Tổng hóa đơn: " + getPaymentAmount(cartList));
         }else {
             System.out.print("Khong co san pham nao");
         }
     }
 
-    static int getPaymentAmount(){
+    static int getPaymentAmount(List<GioHang> cartList){
         int paymentAmount = 0;
-        List<GioHang> cartList = customer.getGioHangArrayList();
         for (GioHang cart: cartList) {
             if(cart.getPaymentStatus().equals(PaymentStatus.PENDING)) {
                 paymentAmount = cart.PaymentAmount();
@@ -375,29 +414,43 @@ public class Main {
         return paymentAmount;
     }
 
-    static void payment() {
-        List<GioHang> cartList = customer.getGioHangArrayList();
-
-        int paymentAmount = getPaymentAmount();
+    static void payment(List<GioHang> cartList) {
+        int paymentAmount = getPaymentAmount(cartList);
         System.out.println("Tong hoa don: " + paymentAmount);
         System.out.println("1. Dong y");
         System.out.println("2. Quay lai");
         int paymentChoose = Integer.parseInt(sc.nextLine());
         switch(paymentChoose) {
-            case 1:
+            case 1:// check lại số lg sản phẩm 1 lần nữa
+                boolean isEnoughProduct = true;
                 if(cartList.size() > 0) {
                     for (GioHang cart: cartList) {
                         if(cart.getPaymentStatus().equals(PaymentStatus.PENDING)) {
-                            cart.setPaymentStatus(PaymentStatus.PAID);
-                            System.out.print("Cam on quy khach!");
-                            for(SanPham sp: productList) {
-                                sp.setSoLuong(cart.getRemaining(sp));
+                            cart.display();
+                            for (SanPham sanPham: cart.getGioHang()){
+                                for (int i = 0; i < productList.size(); i++) {
+                                    if (sanPham.getMaSP().equals(productList.get(i).getMaSP())){
+                                        if (sanPham.getSoLuong() > productList.get(i).getSoLuong()){
+                                            isEnoughProduct = false;
+                                            System.out.println("Mã sản phẩm: " + sanPham.getMaSP() + " không đủ số lượng yêu cầu ");
+                                        }
+                                    }
+                                }
+                            }
+                            if (isEnoughProduct){
+                                cart.setPaymentStatus(PaymentStatus.PAID);
+                                System.out.println("Cảm ơn quý khách");
+                                for (SanPham sp : productList){
+                                    sp.setSoLuong(cart.getRemaining(sp));
+                                }
+                            }
+                            else {
+                                System.out.println("Thanh toán thất bại");
                             }
                         }
                     }
-
                 }else {
-                    System.out.print("Gio hang trong!");
+                    System.out.print("Giỏ hàng rỗng!");
                 }
                 break;
             case 2:
